@@ -14,7 +14,7 @@ the folders in order to the AI agent be able to grade your homeworks
 Create file *requirements.txt*
 
 ```bash
-    pip3 install -r requirements.txt
+    pip install -r requirements.txt
 ```
 
 ## Run streamlit project

@@ -2,7 +2,7 @@
 
 CREATE DATABASE IF NOT EXISTS college_manager;
 
-USE professor_assistant_db;
+USE college_manager;
 
 -- Tabla para almacenar la información del curso
 CREATE TABLE IF NOT EXISTS courses (
