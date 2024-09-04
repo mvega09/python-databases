@@ -1,20 +1,31 @@
-def get_all_the_courss():
+import os
+import mysql.connector
+from mysql.connector import Error
+
+
+def get_all_the_courses():
     connection = mysql.connector.connect(
-        host=os.getenv('DB_HOST'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD'),
-        database=os.getenv('DB_NAME')
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
     )
+
+    courses = []
+
     if connection.is_connected():
-        cursor = connection.cursor(dictionary=True)
+        try:
+            cursor = connection.cursor(dictionary=True)
+            query = """
+                SELECT c.id, c.name FROM courses as c;
+            """
+            cursor.execute(query)
+            courses = cursor.fetchall()
+            print(courses)
+        except Error as e:
+            print(f"Error while getting courses from database: {e}")
+        finally:
+            cursor.close()
+            return courses
 
-        query = """
-        INSERT INTO courses (name, start_date, end_date, cut1_percentage, cut2_percentage, cut3_percentage)
-        VALUES (%s, %s, %s, %s, %s, %s)
-        """
 
-
-        cursor.execute(query, values)
-        connection.commit()
-
-        cursor.close()

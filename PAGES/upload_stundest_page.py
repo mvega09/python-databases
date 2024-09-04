@@ -1,7 +1,11 @@
 import streamlit as st
 import pandas as pd
+from course_db_helper import get_all_the_courses
+from student_db_helper import insert_students_in_bulk
 
-def extract_students_from_excel(excel_file):
+st.title("Upload students")
+
+def extract_students_from_excel(excel_file, course_id):
     """Extracts student information from the provided Excel file."""
     try:
         df = pd.read_excel(excel_file)
@@ -23,17 +27,26 @@ def extract_students_from_excel(excel_file):
 
     df = df[['code', 'fullName', 'emails']]
 
+    insert_students_in_bulk(df, course_id, table_name='students')
+    
     st.write(df)
 
-    #students = [Student(**record) for record in df.to_dict(orient='records')]
+# Obtener los cursos
+courses = get_all_the_courses()
 
-    #return students
+# Crear un diccionario para mapear IDs de cursos a sus nombres
+course_dict = {course['id']: course['name'] for course in courses}
+course_ids = list(course_dict.keys())
 
+# Crear el dropdown con los IDs como valor de selección y los nombres como valor de visualización
+selected_course_id = st.selectbox("Select a course", course_ids, format_func=lambda id: course_dict[id])
 
-st.title("Upload students attendance list Excel file")
-
+# Subir el archivo de Excel
 uploaded_file = st.file_uploader("Attendance list Excel file", type=["xls", "xlsx"])
-if uploaded_file is not None:
-    extract_students_from_excel(uploaded_file)
-    st.write("Se ha cargado el archivo con exito")
 
+# Botón para procesar la carga y mostrar los valores
+if st.button("Save students"):
+    if uploaded_file is not None:
+        extract_students_from_excel(uploaded_file, selected_course_id)
+        st.write("Students have been created successfully")
+    
