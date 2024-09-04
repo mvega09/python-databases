@@ -15,7 +15,7 @@ submit = st.button("Submit")
 
 if submit:
     st.write(f"Course name is: {name}")
-    st.write(f"database name: {os.getenv("DB_NAME")}")
+    st.write(f"database name: {os.getenv('DB_NAME')}")
     try:
         connection = mysql.connector.connect(
             host=os.getenv("DB_HOST"),
