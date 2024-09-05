@@ -51,3 +51,4 @@ def insert_students_in_bulk(df, course_id, table_name='students'):
 # Example usage
 # Assuming df is the DataFrame you want to insert:
 # insert_students_in_bulk(df)
+#comentario de prueba
